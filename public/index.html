@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 個人化學習輔助系統</title>
+  <meta name="description" content="結合 ChatGPT 的即時學習輔助網站，提供問題解釋、練習題生成與學習建議。" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <div class="bg-decor"></div>
+
+  <header class="site-header">
+    <div class="brand">
+      <div>
+        <h1>AI 個人化學習輔助系統</h1>
+        <p class="subtitle">結合 ChatGPT 的即時學習輔助網站</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card mode-card">
+      <h2>選擇學習模式</h2>
+      <div class="mode-grid" role="radiogroup" aria-label="學習模式">
+        <button type="button" class="mode-btn active" data-mode="explain">
+          <span class="mode-icon">💡</span>
+          <span class="mode-title">問題解釋</span>
+          <span class="mode-desc">深入淺出地說明概念</span>
+        </button>
+        <button type="button" class="mode-btn" data-mode="practice">
+          <span class="mode-icon">📝</span>
+          <span class="mode-title">練習題生成</span>
+          <span class="mode-desc">客製化練習與測驗</span>
+        </button>
+        <button type="button" class="mode-btn" data-mode="advice">
+          <span class="mode-icon">🎯</span>
+          <span class="mode-title">學習建議</span>
+          <span class="mode-desc">個人化學習路徑建議</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card input-card">
+      <label for="question" class="field-label">輸入你的問題或主題</label>
+      <textarea id="question" placeholder="例如：請解釋微積分的基本定理，或幫我出二次方程式的題目練習..."></textarea>
+      <div class="actions">
+        <span class="hint" id="charHint">0 字</span>
+        <button id="submitBtn" class="primary-btn">
+          <span class="btn-text">送出</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card answer-card" id="answerCard" hidden>
+      <div class="answer-header">
+        <h2>AI 回答</h2>
+        <div class="answer-tools">
+          <span class="badge" id="modeBadge">問題解釋</span>
+          <button type="button" class="copy-btn" id="copyMdBtn" title="複製 Markdown 原文">複製 Markdown</button>
+          <button type="button" class="copy-btn" id="copyTxtBtn" title="複製純文字">複製純文字</button>
+        </div>
+      </div>
+      <div class="answer-content" id="answerContent"></div>
+    </section>
+
+    <section class="card history-card" id="historyCard" hidden>
+      <div class="history-header">
+        <h2>學習歷史</h2>
+        <button type="button" class="link-btn" id="clearHistoryBtn">清除全部</button>
+      </div>
+      <ul class="history-list" id="historyList"></ul>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <p>© 廖芷伶, All Rights Reserved.</p>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
