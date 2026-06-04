@@ -212,4 +212,79 @@
       submitBtn.querySelector('.btn-text').textContent = '送出';
     }
   });
+
+  // ---- Camera Photo Feature ----
+  const startCameraBtn = document.getElementById("startCameraBtn");
+  const takePhotoBtn = document.getElementById("takePhotoBtn");
+  const stopCameraBtn = document.getElementById("stopCameraBtn");
+  const cameraVideo = document.getElementById("cameraVideo");
+  const cameraStatus = document.getElementById("cameraStatus");
+  const photoCanvas = document.getElementById("photoCanvas");
+  const photoImage = document.getElementById("photoImage");
+  const photoPreview = document.getElementById("photoPreview");
+
+  let cameraStream = null;
+
+  async function startCamera() {
+    try {
+      cameraStatus.textContent = "正在開啟鏡頭...";
+
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: "environment" }
+        },
+        audio: false
+      });
+
+      cameraVideo.srcObject = cameraStream;
+      await cameraVideo.play();
+
+      startCameraBtn.disabled = true;
+      takePhotoBtn.disabled = false;
+      stopCameraBtn.disabled = false;
+      cameraStatus.textContent = "鏡頭已開啟，可以拍照。";
+    } catch (error) {
+      console.error("開啟鏡頭失敗：", error);
+      cameraStatus.textContent = "無法開啟鏡頭，請確認瀏覽器已允許相機權限。";
+    }
+  }
+
+  function takePhoto() {
+    if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) {
+      cameraStatus.textContent = "鏡頭尚未準備完成，請稍後再拍。";
+      return;
+    }
+
+    photoCanvas.width = cameraVideo.videoWidth;
+    photoCanvas.height = cameraVideo.videoHeight;
+
+    const ctx = photoCanvas.getContext("2d");
+    ctx.drawImage(cameraVideo, 0, 0, photoCanvas.width, photoCanvas.height);
+
+    const imageDataUrl = photoCanvas.toDataURL("image/png");
+    photoImage.src = imageDataUrl;
+    photoPreview.hidden = false;
+
+    cameraStatus.textContent = "拍照完成，照片已顯示在下方。";
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      cameraStream = null;
+    }
+
+    cameraVideo.srcObject = null;
+
+    startCameraBtn.disabled = false;
+    takePhotoBtn.disabled = true;
+    stopCameraBtn.disabled = true;
+    cameraStatus.textContent = "鏡頭已關閉。";
+  }
+
+  if (startCameraBtn && takePhotoBtn && stopCameraBtn) {
+    startCameraBtn.addEventListener("click", startCamera);
+    takePhotoBtn.addEventListener("click", takePhoto);
+    stopCameraBtn.addEventListener("click", stopCamera);
+  }
 })();

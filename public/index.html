@@ -85,6 +85,30 @@
     </section>
   </main>
 
+<section class="camera-card">
+  <h2>拍照功能</h2>
+  <p>可開啟裝置鏡頭並拍攝照片，照片只會顯示在本頁面，不會上傳。</p>
+
+  <div class="camera-frame">
+    <video id="cameraVideo" autoplay muted playsinline></video>
+  </div>
+
+  <div class="camera-actions">
+    <button type="button" id="startCameraBtn">開啟鏡頭</button>
+    <button type="button" id="takePhotoBtn" disabled>拍照</button>
+    <button type="button" id="stopCameraBtn" disabled>關閉鏡頭</button>
+  </div>
+
+  <p id="cameraStatus" class="camera-status">尚未開啟鏡頭</p>
+
+  <canvas id="photoCanvas" hidden></canvas>
+
+  <div class="photo-preview" id="photoPreview" hidden>
+    <h3>拍攝結果</h3>
+    <img id="photoImage" alt="拍攝結果" />
+  </div>
+</section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <footer class="site-footer">
